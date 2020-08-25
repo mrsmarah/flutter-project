@@ -21,7 +21,7 @@
 - Android Emulator nexus 6 API 30
 
 ### UML
-![UML](/assets/flutter.jpg)
+![UML](/assets/flutter.PNG)
 
 
 
