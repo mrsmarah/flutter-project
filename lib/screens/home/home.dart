@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/home/body.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-var url = 'https://jsonplaceholder.typicode.com/posts';
+import 'package:flutter_app/storage/database.dart';
+import 'package:flutter_app/storage/model.dart';
+
 
 class Home extends StatelessWidget{
   @override
@@ -22,24 +24,23 @@ class Log extends StatelessWidget {
   }
 }
 
-class Album {
+class Post {
   final int userId;
   final int id;
   final String title;
   final String body;
 
-  Album({this.userId, this.id, this.title, this.body});
+  Post({this.userId, this.id, this.title, this.body});
 
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'],
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
       id: json['id'],
+      userId: json['userId'],
       title: json['title'],
       body: json['body'],
     );
   }
 }
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -47,35 +48,33 @@ class HomePage extends StatefulWidget {
 }
 
 class Data extends State<HomePage>{
-  Future<List<Album>> futureAlbum;
-  Future<List<Album>> fetchAlbum() async {
+  String url = 'https://jsonplaceholder.typicode.com/posts';
+
+  Future<List<Post>> futureAlbum;/////////////
+  List<Post> album;///////////////////////////
+
+  Future<List<Post>> fetchAlbum() async {
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      print(json.decode(response.body));
       List data = json.decode(response.body);
-      return data.map((info) => new Album.fromJson(info)).toList();
-//      return Album.fromJson(json.decode(response.body));
+
+//      return data.map((post) => DBHelper.add(Post.fromJson(post))).toList();
+
+      return data.map((info) => new Post.fromJson(info)).toList();
     } else {
       throw Exception('Failed to load album');
     }
   }
 
-//  void getData() async{
-//    var response = await http.get(url);
-//    Map data = jsonDecode(response.body);
-//    print(data['title']);
-//  }
-
   @override
   void initState() {
     super.initState();
     futureAlbum =fetchAlbum();
-//    getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Album>>(
+    return FutureBuilder<List<Post>>(
       future: futureAlbum,
       builder: (context, snapshot) {
         print("snapshot");
@@ -112,6 +111,5 @@ class Data extends State<HomePage>{
         return CircularProgressIndicator();
       },
     );
-
   }
 }
