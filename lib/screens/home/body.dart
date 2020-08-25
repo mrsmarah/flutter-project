@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/login/login.dart';
 import 'package:flutter_app/screens/signup/signup.dart';
+import 'package:flutter_app/screens/home/home.dart';
 import 'package:flutter_app/screens/home/background_home.dart';
 import 'package:flutter_app/components/button.dart';
 
@@ -18,6 +19,29 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: size.height * 0.05),
+            Padding(
+              padding: EdgeInsets.all(50),
+              child: Text(
+                'Welcome',
+                style: TextStyle(
+//                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            RoundedButton(
+              text: "HOME",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return HomePage();
+                    },
+                  ),
+                );
+              },
+            ),
             RoundedButton(
               text: "LOG IN",
               press: () {
@@ -33,8 +57,6 @@ class Body extends StatelessWidget {
             ),
             RoundedButton(
               text: "SIGN UP",
-              color: kPrimaryLightColor,
-              textColor: Colors.black,
               press: () {
                 Navigator.push(
                   context,
